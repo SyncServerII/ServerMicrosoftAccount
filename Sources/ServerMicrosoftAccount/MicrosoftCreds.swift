@@ -31,7 +31,7 @@ public class MicrosoftCreds : AccountAPICall, Account {
     
     public var owningAccountsNeedCloudFolderName: Bool = false
     
-    public var delegate: AccountDelegate?
+    var delegate: AccountDelegate?
     
     public var accountCreationUser: AccountCreationUser?
 
@@ -46,8 +46,9 @@ public class MicrosoftCreds : AccountAPICall, Account {
     
     private var configuration: MicrosoftCredsConfiguration?
 
-    required public init?(configuration: Any? = nil) {
+    required public init?(configuration: Any? = nil, delegate: AccountDelegate?) {
         super.init()
+        self.delegate = delegate
         guard let configuration = configuration as? MicrosoftCredsConfiguration else {
             return nil
         }
@@ -295,12 +296,11 @@ public class MicrosoftCreds : AccountAPICall, Account {
     }
     
     public static func fromProperties(_ properties: AccountProperties, user:AccountCreationUser?, configuration: Any?, delegate:AccountDelegate?) -> Account? {
-        guard let creds = MicrosoftCreds(configuration: configuration) else {
+        guard let creds = MicrosoftCreds(configuration: configuration, delegate: delegate) else {
             return nil
         }
         
         creds.accountCreationUser = user
-        creds.delegate = delegate
         creds.accessToken =
             properties.properties[ServerConstants.HTTPOAuth2AccessTokenKey] as? String
         return creds
@@ -321,11 +321,10 @@ public class MicrosoftCreds : AccountAPICall, Account {
             return nil
         }
         
-        guard let result = MicrosoftCreds(configuration: configuration) else {
+        guard let result = MicrosoftCreds(configuration: configuration, delegate: delegate) else {
             return nil
         }
         
-        result.delegate = delegate
         result.accountCreationUser = user
         
         switch user {

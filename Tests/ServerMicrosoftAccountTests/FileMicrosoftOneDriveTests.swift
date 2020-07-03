@@ -54,7 +54,7 @@ class FileMicrosoftOneDriveTests: XCTestCase {
     }
     
     func testCheckForFileFailsWithFileThatDoesNotExist() {
-        guard let creds = MicrosoftCreds(configuration: plist) else {
+        guard let creds = MicrosoftCreds(configuration: plist, delegate: nil) else {
             XCTFail()
             return
         }
@@ -89,7 +89,7 @@ class FileMicrosoftOneDriveTests: XCTestCase {
     }
     
     func testCheckForFileFailsWithExpiredAccessToken() {
-        guard let creds = MicrosoftCreds(configuration: plist) else {
+        guard let creds = MicrosoftCreds(configuration: plist, delegate: nil) else {
             XCTFail()
             return
         }
@@ -120,7 +120,7 @@ class FileMicrosoftOneDriveTests: XCTestCase {
     
     // Checks for an existing file in My Files > Apps > Neebla
     func testCheckForFileWorksWithExistingFile() {
-        guard let creds = MicrosoftCreds(configuration: plist) else {
+        guard let creds = MicrosoftCreds(configuration: plist, delegate: nil) else {
             XCTFail()
             return
         }
@@ -159,7 +159,7 @@ class FileMicrosoftOneDriveTests: XCTestCase {
         let ext = file.mimeType.fileNameExtension
         let fileName = Foundation.UUID().uuidString + ".\(ext)"
         
-        guard let creds = MicrosoftCreds(configuration: plist) else {
+        guard let creds = MicrosoftCreds(configuration: plist, delegate: nil) else {
             XCTFail()
             return
         }
@@ -212,7 +212,7 @@ class FileMicrosoftOneDriveTests: XCTestCase {
         let ext = file.mimeType.fileNameExtension
         let fileName = Foundation.UUID().uuidString + ".\(ext)"
         
-        guard let creds = MicrosoftCreds(configuration: plist) else {
+        guard let creds = MicrosoftCreds(configuration: plist, delegate: nil) else {
             XCTFail()
             return
         }
@@ -340,7 +340,7 @@ class FileMicrosoftOneDriveTests: XCTestCase {
         let deviceUUID = Foundation.UUID().uuidString
         let fileUUID = Foundation.UUID().uuidString
         
-        guard let creds = MicrosoftCreds(configuration: plist) else {
+        guard let creds = MicrosoftCreds(configuration: plist, delegate: nil) else {
             XCTFail()
             return
         }
@@ -364,7 +364,7 @@ class FileMicrosoftOneDriveTests: XCTestCase {
         let deviceUUID = Foundation.UUID().uuidString
         let fileUUID = Foundation.UUID().uuidString
         
-        guard let creds = MicrosoftCreds(configuration: plist) else {
+        guard let creds = MicrosoftCreds(configuration: plist, delegate: nil) else {
             XCTFail()
             return
         }
@@ -469,7 +469,7 @@ class FileMicrosoftOneDriveTests: XCTestCase {
     }
 
     func testDownloadOfNonExistingFileFails() {
-        guard let creds = MicrosoftCreds(configuration: plist) else {
+        guard let creds = MicrosoftCreds(configuration: plist, delegate: nil) else {
             XCTFail()
             return
         }
@@ -488,7 +488,7 @@ class FileMicrosoftOneDriveTests: XCTestCase {
     
     // Download without checksum.
     func testSimpleDownloadWorks() {
-        guard let creds = MicrosoftCreds(configuration: plist) else {
+        guard let creds = MicrosoftCreds(configuration: plist, delegate: nil) else {
             XCTFail()
             return
         }
@@ -520,7 +520,7 @@ class FileMicrosoftOneDriveTests: XCTestCase {
 
     // Reason code 80049228
     func testSimpleDownloadWithExpiredAccessTokenFails() {
-        guard let creds = MicrosoftCreds(configuration: plist) else {
+        guard let creds = MicrosoftCreds(configuration: plist, delegate: nil) else {
             XCTFail()
             return
         }
@@ -573,7 +573,7 @@ class FileMicrosoftOneDriveTests: XCTestCase {
         let deviceUUID = Foundation.UUID().uuidString
         let fileUUID = Foundation.UUID().uuidString
         
-        guard let creds = MicrosoftCreds(configuration: plist) else {
+        guard let creds = MicrosoftCreds(configuration: plist, delegate: nil) else {
             XCTFail()
             return
         }
@@ -642,7 +642,7 @@ class FileMicrosoftOneDriveTests: XCTestCase {
     //}
     
     func testDeletionOfNonExistingFileFails() {
-        guard let creds = MicrosoftCreds(configuration: plist) else {
+        guard let creds = MicrosoftCreds(configuration: plist, delegate: nil) else {
             XCTFail()
             return
         }
@@ -663,7 +663,7 @@ class FileMicrosoftOneDriveTests: XCTestCase {
         let deviceUUID = Foundation.UUID().uuidString
         let fileUUID = Foundation.UUID().uuidString
         
-        guard let creds = MicrosoftCreds(configuration: plist) else {
+        guard let creds = MicrosoftCreds(configuration: plist, delegate: nil) else {
             XCTFail()
             return
         }
@@ -696,7 +696,7 @@ class FileMicrosoftOneDriveTests: XCTestCase {
     func testSimpleDeletionWithExpiredAccessTokenFails() {
         // First need to get item id of the file in the normal way so it doesn't fail.
         
-        guard let creds = MicrosoftCreds(configuration: plist) else {
+        guard let creds = MicrosoftCreds(configuration: plist, delegate: nil) else {
             XCTFail()
             return
         }
@@ -729,7 +729,7 @@ class FileMicrosoftOneDriveTests: XCTestCase {
     }
 
     func deleteExpectingExpiredAccessToken(itemId: String, expectation: XCTestExpectation) {
-        guard let creds = MicrosoftCreds(configuration: plist) else {
+        guard let creds = MicrosoftCreds(configuration: plist, delegate: nil) else {
             XCTFail()
             return
         }
@@ -759,7 +759,7 @@ class FileMicrosoftOneDriveTests: XCTestCase {
     }
     
     func lookupFile(cloudFileName: String, expectError:Bool = false) {
-        guard let creds = MicrosoftCreds(configuration: plist) else {
+        guard let creds = MicrosoftCreds(configuration: plist, delegate: nil) else {
             XCTFail()
             return
         }
@@ -808,7 +808,7 @@ class FileMicrosoftOneDriveTests: XCTestCase {
     // MARK: Large file upload
     
     func testCreateUploadSession() {
-        guard let creds = MicrosoftCreds(configuration: plist) else {
+        guard let creds = MicrosoftCreds(configuration: plist, delegate: nil) else {
             XCTFail()
             return
         }
@@ -956,7 +956,7 @@ class FileMicrosoftOneDriveTests: XCTestCase {
     }
 
     func testCreateUploadSessionWithExpiredToken() {
-        guard let creds = MicrosoftCreds(configuration: plist) else {
+        guard let creds = MicrosoftCreds(configuration: plist, delegate: nil) else {
             XCTFail()
             return
         }
@@ -982,7 +982,7 @@ class FileMicrosoftOneDriveTests: XCTestCase {
     }
 
     func testUploadWithAPartialBlock() {
-        guard let creds = MicrosoftCreds(configuration: plist) else {
+        guard let creds = MicrosoftCreds(configuration: plist, delegate: nil) else {
             XCTFail()
             return
         }
@@ -1031,7 +1031,7 @@ class FileMicrosoftOneDriveTests: XCTestCase {
     }
 
     func testUploadWithSingleBlock() {
-        guard let creds = MicrosoftCreds(configuration: plist) else {
+        guard let creds = MicrosoftCreds(configuration: plist, delegate: nil) else {
             XCTFail()
             return
         }
@@ -1079,7 +1079,7 @@ class FileMicrosoftOneDriveTests: XCTestCase {
     }
 
     func testUploadWithTwoBlocks() {
-        guard let creds = MicrosoftCreds(configuration: plist) else {
+        guard let creds = MicrosoftCreds(configuration: plist, delegate: nil) else {
             XCTFail()
             return
         }
@@ -1128,7 +1128,7 @@ class FileMicrosoftOneDriveTests: XCTestCase {
     }
 
     func testUploadWithTwoBlocksAndAPartial() {
-        guard let creds = MicrosoftCreds(configuration: plist) else {
+        guard let creds = MicrosoftCreds(configuration: plist, delegate: nil) else {
             XCTFail()
             return
         }
@@ -1176,7 +1176,7 @@ class FileMicrosoftOneDriveTests: XCTestCase {
     }
 
     func testUploadImageUsingSessionMethod() {
-        guard let creds = MicrosoftCreds(configuration: plist) else {
+        guard let creds = MicrosoftCreds(configuration: plist, delegate: nil) else {
             XCTFail()
             return
         }
@@ -1220,7 +1220,7 @@ class FileMicrosoftOneDriveTests: XCTestCase {
     }
 
     func testCreateAppFolder() {
-        guard let creds = MicrosoftCreds(configuration: plist) else {
+        guard let creds = MicrosoftCreds(configuration: plist, delegate: nil) else {
             XCTFail()
             return
         }
