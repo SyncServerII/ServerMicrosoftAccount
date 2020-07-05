@@ -150,6 +150,12 @@ public class MicrosoftCreds : AccountAPICall, Account {
 
         self.apiCall(method: "POST", path: "/oauth2/v2.0/token", additionalHeaders:additionalHeaders, body: .string(bodyParameters), expectedSuccessBody: .data) { apiResult, statusCode, responseHeaders in
 
+            Log.debug("apiResult: \(String(describing: apiResult))")
+            // Looks like this is: apiResult: Optional(ServerAccount.APICallResult.dictionary(["trace_id": 845b18d3-afa5-4ae5-bdd0-3a8e2e772700, "error_description": AADSTS70000: The provided value for the 'assertion' is not valid. The assertion has expired.
+            // when the accessToken (idToken) has expired.
+            
+            Log.debug("responseHeaders: \(String(describing: responseHeaders))")
+
             guard statusCode == HTTPStatusCode.OK else {
                 completion(MicrosoftError.badStatusCode(statusCode))
                 return

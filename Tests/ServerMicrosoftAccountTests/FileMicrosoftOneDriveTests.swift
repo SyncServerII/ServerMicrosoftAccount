@@ -14,12 +14,18 @@ import ServerShared
 @testable import ServerMicrosoftAccount
 import ServerAccount
 
-struct GooglePlist: Decodable, MicrosoftCredsConfiguration {
-    let refreshToken: String
+// Credentials bootstrapped using /Users/chris/Desktop/Adding Sign Ins/Microsoft/ms-identity-mobile-apple-swift-objc-master
+// This app downloaded from:  https://docs.microsoft.com/en-us/azure/active-directory/develop/tutorial-v2-ios
+// and registered here: https://aka.ms/MobileAppReg
+
+struct MicrosoftPlist: Decodable, MicrosoftCredsConfiguration {
     var MicrosoftClientId:String?
     var MicrosoftClientSecret:String?
-    let accessToken: String?
     
+    let refreshToken: String
+    let accessToken: String?
+    let idToken: String?
+
     static func load(from url: URL) -> Self {
         guard let data = try? Data(contentsOf: url) else {
             fatalError("Could not get data from url")
@@ -41,16 +47,37 @@ class FileMicrosoftOneDriveTests: XCTestCase {
 
     let knownAbsentFile = "Markwa.Farkwa.Blarkwa"
 
-    let plist = GooglePlist.load(from: URL(fileURLWithPath: "/Users/chris/Desktop/Apps/SyncServerII/Private/ServerMicrosoftAccount/token.plist"))
-    let plistExpiredAccessToken = GooglePlist.load(from: URL(fileURLWithPath: "/Users/chris/Desktop/Apps/SyncServerII/Private/ServerMicrosoftAccount/tokenExpiredAccessToken.plist"))
+    let plist = MicrosoftPlist.load(from: URL(fileURLWithPath: "/Users/chris/Desktop/Apps/SyncServerII/Private/ServerMicrosoftAccount/token.plist"))
+    let plistExpiredAccessToken = MicrosoftPlist.load(from: URL(fileURLWithPath: "/Users/chris/Desktop/Apps/SyncServerII/Private/ServerMicrosoftAccount/tokenExpiredAccessToken.plist"))
 
     override func setUp() {
         super.setUp()
+        HeliumLogger.use(.debug)
     }
     
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
+    }
+    
+    func testGenerateTokens() {
+        guard let creds = MicrosoftCreds(configuration: plist, delegate: nil) else {
+            XCTFail()
+            return
+        }
+        
+        creds.refreshToken = plist.refreshToken
+        creds.accessToken = plist.idToken
+        
+        let exp = expectation(description: "\(#function)\(#line)")
+
+        creds.generateTokens { error in
+            XCTAssertNil(error)
+            print("refreshToken: \(String(describing: creds.refreshToken))")
+            exp.fulfill()
+        }
+        
+        waitForExpectations(timeout: 10, handler: nil)
     }
     
     func testCheckForFileFailsWithFileThatDoesNotExist() {
